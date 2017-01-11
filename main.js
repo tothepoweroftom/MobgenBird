@@ -1,5 +1,71 @@
 var game = new Phaser.Game(400, 490, Phaser.AUTO, "gameDiv");
 
+var bootState = {
+
+    preload: function() {
+        if(!game.device.desktop) {
+            game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+            game.scale.setMinMax(game.width/2, game.height/2, game.width, game.height);
+        }
+
+        game.scale.pageAlignHorizontally = true;
+        game.scale.pageAlignVertically = true;
+
+        game.stage.backgroundColor = '#000000';
+
+        game.load.image('bird', 'assets/drone-2.png');
+        game.load.image('pipe', 'assets/pipe.png');
+
+        // Load the jump sound
+        game.load.audio('jump', 'assets/jump.wav');
+    },
+
+    create: function() {
+        // game.physics.startSystem(Phaser.Physics.ARCADE);
+        // game.paused = true
+
+        // this.startButton = this.game.add.button(this.game.width/2, 100, 'startButton', this.startClick, this);
+        // this.startButton.anchor.setTo(0.5,0.5);
+        this.pipes = game.add.group();
+        this.timer = game.time.events.loop(1750, this.addRowOfPipes, this);
+
+        this.bird = game.add.sprite(100, 245, 'bird');
+        //start game text
+         var text = "Tap to begin";
+         var style = { font: "30px Arial", fill: "#fff", align: "center" };
+         var t = this.game.add.text(this.game.width/2, this.game.height/2-100, text, style);
+         t.anchor.set(0.5);
+        // New anchor position
+        this.bird.anchor.setTo(-0.2, 0.5);
+
+        var spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+        spaceKey.onDown.add(this.clickThru, this);
+        game.input.onDown.add(this.clickThru, this);
+
+        this.score = 0;
+        this.labelScore = game.add.text(20, 20, "0", { font: "30px Arial", fill: "#ffffff" });
+
+        // Add the jump sound
+        // this.jumpSound = game.add.audio('jump');
+        // this.jumpSound.volume = 0.2;
+
+    },
+
+    update: function() {
+      if(this.game.input.activePointer.justPressed()) {
+        this.game.state.start('main');
+      }
+
+    },
+
+
+    clickThru: function() {
+      game.state.stop('boot');
+      game.state.start('main');
+    },
+
+};
+
 var mainState = {
 
     preload: function() {
@@ -78,10 +144,9 @@ var mainState = {
         this.bird.body.velocity.y = -200;
 
         // Jump animation
-        game.add.tween(this.bird).to({angle: -20}, 100).start();
+        game.add.tween(this.bird).to({angle: -20}, 140).start();
 
         // Play sound
-        this.jumpSound.play();
     },
 
     hitPipe: function() {
@@ -126,6 +191,7 @@ var mainState = {
         this.labelScore.text = this.score;
     },
 };
-
+game.state.add('boot', bootState);
 game.state.add('main', mainState);
-game.state.start('main');
+
+game.state.start('boot');
