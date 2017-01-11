@@ -44,8 +44,8 @@ var mainState = {
         this.labelScore = game.add.text(20, 20, "0", { font: "30px Arial", fill: "#ffffff" });
 
         // Add the jump sound
-        this.jumpSound = game.add.audio('jump');
-        this.jumpSound.volume = 0.2;
+        // this.jumpSound = game.add.audio('jump');
+        // this.jumpSound.volume = 0.2;
 
     },
 
