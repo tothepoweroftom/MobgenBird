@@ -24,7 +24,7 @@ var mainState = {
         // game.physics.startSystem(Phaser.Physics.ARCADE);
         // game.paused = true
 
-        this.startButton = this.game.add.button(this.game.width/2, 100, 'startButton', this.startClick, this);
+        // this.startButton = this.game.add.button(this.game.width/2, 100, 'startButton', this.startClick, this);
         this.startButton.anchor.setTo(0.5,0.5);
         this.pipes = game.add.group();
         this.timer = game.time.events.loop(1750, this.addRowOfPipes, this);
