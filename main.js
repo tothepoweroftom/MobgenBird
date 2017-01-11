@@ -11,9 +11,9 @@ var mainState = {
         game.scale.pageAlignHorizontally = true;
         game.scale.pageAlignVertically = true;
 
-        game.stage.backgroundColor = '#ffffff';
+        game.stage.backgroundColor = '#000000';
 
-        game.load.image('bird', 'assets/bird.png');
+        game.load.image('bird', 'assets/drone-2.png');
         game.load.image('pipe', 'assets/pipe.png');
 
         // Load the jump sound
@@ -21,14 +21,17 @@ var mainState = {
     },
 
     create: function() {
-        game.physics.startSystem(Phaser.Physics.ARCADE);
+        // game.physics.startSystem(Phaser.Physics.ARCADE);
+        // game.paused = true
 
+        this.startButton = this.game.add.button(this.game.width/2, 100, 'startButton', this.startClick, this);
+        this.startButton.anchor.setTo(0.5,0.5);
         this.pipes = game.add.group();
-        this.timer = game.time.events.loop(1500, this.addRowOfPipes, this);
+        this.timer = game.time.events.loop(1750, this.addRowOfPipes, this);
 
         this.bird = game.add.sprite(100, 245, 'bird');
         game.physics.arcade.enable(this.bird);
-        this.bird.body.gravity.y = 1000;
+        this.bird.body.gravity.y = 600;
 
         // New anchor position
         this.bird.anchor.setTo(-0.2, 0.5);
@@ -43,6 +46,13 @@ var mainState = {
         // Add the jump sound
         this.jumpSound = game.add.audio('jump');
         this.jumpSound.volume = 0.2;
+
+    },
+
+    startClick: function() {
+      // start button click handler
+      // start the 'play' state
+       game.physics.startSystem(Phaser.Physics.ARCADE);
     },
 
     update: function() {
@@ -56,12 +66,16 @@ var mainState = {
             this.bird.angle += 1;
     },
 
+    unpause: function(){
+      game.paused = false;
+    },
+
     jump: function() {
         // If the bird is dead, he can't jump
         if (this.bird.alive == false)
             return;
 
-        this.bird.body.velocity.y = -350;
+        this.bird.body.velocity.y = -200;
 
         // Jump animation
         game.add.tween(this.bird).to({angle: -20}, 100).start();
