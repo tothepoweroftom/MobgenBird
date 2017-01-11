@@ -93,7 +93,7 @@ var mainState = {
         // this.startButton = this.game.add.button(this.game.width/2, 100, 'startButton', this.startClick, this);
         // this.startButton.anchor.setTo(0.5,0.5);
         this.pipes = game.add.group();
-        this.timer = game.time.events.loop(1750, this.addRowOfPipes, this);
+        this.timer = game.time.events.loop(1850, this.addRowOfPipes, this);
 
         this.bird = game.add.sprite(100, 245, 'bird');
         game.physics.arcade.enable(this.bird);
@@ -144,7 +144,7 @@ var mainState = {
         this.bird.body.velocity.y = -200;
 
         // Jump animation
-        game.add.tween(this.bird).to({angle: -20}, 140).start();
+        game.add.tween(this.bird).to({angle: -20}, 100).start();
 
         // Play sound
     },
